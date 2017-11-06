@@ -1,0 +1,43 @@
+grammar org.xtext.example.mydsl.MyDsl with org.eclipse.xtext.xbase.Xtype
+
+generate myDsl "http://www.xtext.org/example/mydsl/MyDsl"
+import "http://www.tool.com/tool/mydsl/MyDsl"
+
+Model:
+	document=Document?;
+
+Document:
+	'document' name=ID '{'
+	signatures+=(ProcedureSignature | Procedure)*
+	'}';
+
+ProcedureSignature:
+	'signature' name=ID
+	'()'
+	';';
+
+Procedure:
+	'procedure' name=ID
+    '()'
+    ('implements' implements=[ProcedureSignature|QualifiedName])?
+    flow=Flow?
+;
+
+Flow:
+	{Flow} '{' nodes+=Node* '}'
+;
+
+Node:
+	NamedElementRef
+;
+
+@Override
+QualifiedName:
+  ValidID ('.' ValidID)*;
+
+/**
+ * Named Element ref can reference all sub-types of class Declaration plus Signatures, Procedures and Screen Signatures
+ */
+NamedElementRef:
+	 declaration=[NamedElement|QualifiedName]
+;

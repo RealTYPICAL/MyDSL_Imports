@@ -1,0 +1,16 @@
+task copyApplication(type: Sync) {
+  def installDistTask = project(':com.tool.small.mydsl.ide').tasks.installDist
+  dependsOn installDistTask
+  from installDistTask.outputs
+  into 'server/mydsl'
+  fileMode = 0555
+}
+
+clean {
+  doLast {
+    delete copyApplication.outputs
+  }
+}
+
+npmInstall.dependsOn copyApplication
+

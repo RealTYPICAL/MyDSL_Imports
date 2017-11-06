@@ -1,0 +1,19 @@
+apply plugin: 'application'
+
+dependencies {
+	compile project(':com.tool.small.mydsl')
+	compile "org.eclipse.xtext:org.eclipse.xtext.ide:${xtextVersion}"
+	compile "org.eclipse.xtext:org.eclipse.xtext.xbase.ide:${xtextVersion}"
+}
+
+mainClassName = 'org.eclipse.xtext.ide.server.ServerLauncher'
+startScripts {
+  applicationName = 'MyDsl-Standalone'
+  outputDir = new File(project.buildDir, 'scripts')
+  classpath = jar.outputs.files + project.configurations.runtime
+}
+
+//this is an eclipse plugin project
+eclipseClasspath.enabled=false
+cleanEclipseClasspath.enabled=false
+
