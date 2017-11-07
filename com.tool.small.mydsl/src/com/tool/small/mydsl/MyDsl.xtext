@@ -4,22 +4,22 @@ generate myDsl "http://www.xtext.org/example/mydsl/MyDsl"
 import "http://www.tool.com/tool/mydsl/MyDsl"
 
 Model:
-	document=Document?;
+	class=Class?;
 
-Document:
-	'document' name=ID '{'
-	signatures+=(ProcedureSignature | Procedure)*
+Class:
+	'class' name=ID '{'
+	statements+=(Declaration | Method)*
 	'}';
 
-ProcedureSignature:
-	'signature' name=ID
+Declaration:
+	'declaration' name=ID
 	'()'
 	';';
 
-Procedure:
-	'procedure' name=ID
+Method:
+	'method' name=ID
     '()'
-    ('implements' implements=[ProcedureSignature|QualifiedName])?
+    ('implements' implements=[Declaration|QualifiedName])?
     flow=Flow?
 ;
 
@@ -35,9 +35,6 @@ Node:
 QualifiedName:
   ValidID ('.' ValidID)*;
 
-/**
- * Named Element ref can reference all sub-types of class Declaration plus Signatures, Procedures and Screen Signatures
- */
 NamedElementRef:
 	 declaration=[NamedElement|QualifiedName]
 ;
