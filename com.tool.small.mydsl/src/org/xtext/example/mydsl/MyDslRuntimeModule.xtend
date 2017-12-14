@@ -3,9 +3,23 @@
  */
 package org.xtext.example.mydsl
 
+import com.google.inject.Binder
+import com.google.inject.name.Names
+import com.tool.small.mydsl.myDsl.Import
+import org.eclipse.xtext.scoping.IScopeProvider
+import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
+
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
  */
 class MyDslRuntimeModule extends AbstractMyDslRuntimeModule {
+	
+	override void configureIScopeProviderDelegate(Binder binder) {
+		binder.bind(IScopeProvider)
+			.annotatedWith(
+				Names
+				 .named(AbstractDeclarativeScopeProvider.NAMED_DELEGATE))
+				.to(Import);
+	}
 	
 }
